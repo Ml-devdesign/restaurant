@@ -1,3 +1,19 @@
+// Div Subsides and button showStuff
+const btnDisplay = document.getElementById('#btnDisplay');
+const divSubsides = document.getElementById('#divSubsides');
+
+function showStuff(divId) {
+    const divToToggle = document.querySelector( divId);
+    if(divToToggle.style.display === 'none' || divToToggle.style.display === "") {
+        divToToggle.style.display = 'block';
+    } else {
+        divToToggle.style.display = 'none';
+    }   
+}
+btnDisplay.addEventListener('click', function() {
+    showStuff("#divSubsides");
+});
+
 // Liste de tous vos formulaires
 var forms = ['form-1', 'form-2', 'form-3', 'form-4', 'form-5', 'form-6', 'form-7', 'form-8', 'form-9'];
 

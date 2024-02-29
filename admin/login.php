@@ -1,12 +1,12 @@
 <?php 
     require_once $_SERVER["DOCUMENT_ROOT"] ."/admin/include/connect.php";
     if (isset($_POST['login']) && isset($_POST['password'])){
-        $sql = "SELECT * FROM administrateurs WHERE nom_administrateurs=:login";
+        $sql = "SELECT * FROM employees WHERE last_name=:login";
         $stmt = $db->prepare($sql);
         $stmt ->execute([':login' => $_POST["login"]]);
 
         if ($row = $stmt -> fetch()){
-            if (password_verify($_POST['password'], $row['mot_de_passe_hash'])) {
+            if (password_verify($_POST['password'], $row['password_hash'])) {
                 session_start();
                 $_SESSION["user_connected"] = "ok";
                 header("Location: /admin/administrateurs/index.php");
@@ -29,11 +29,11 @@
        <form action="login.php" method="POST">
             <div class="username">
                 <label for="ok1"></label>
-                <input type="text" placeholder="Username" name="login" id="ok1">
+                <input type="text" placeholder="username" name="login" id="ok1">
             </div>
             <div class="password">
                 <label for="ok2"></label>
-                <input type="password" placeholder="Password" name="password" id="ok2">
+                <input type="password" placeholder="password" name="password" id="ok2">
             </div>
             <div class="submit">
                 <input type="submit" value="ok">

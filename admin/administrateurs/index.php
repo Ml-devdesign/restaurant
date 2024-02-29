@@ -1,32 +1,55 @@
 
 <?php 
 // Inclusion des fichiers de protection et de connexion à la base de données
-include $_SERVER["DOCUMENT_ROOT"] . "/admin/include/protect.php";
+// include $_SERVER["DOCUMENT_ROOT"] . "/admin/include/protect.php";
 require_once $_SERVER["DOCUMENT_ROOT"]. "/admin/include/connect.php";
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);//ini_set('display_errors', 1);  //au début de votre script PHP pour afficher les erreurs qui pourraient survenir.
 
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);//ini_set('display_errors', 1);  //au début de votre script PHP pour afficher les erreurs qui pourraient survenir.
+
+// Définition du nombre d'éléments à afficher par page
+$nbParPage = 16;
+
+// Récupération du numéro de la page à afficher depuis les paramètres GET
+$page = isset($_GET['page']) ? $_GET['page'] : 1;
+
+// Vérification et correction du numéro de page
+if (!is_numeric($page) || $page < 1) {
+    $page = 1;
+}
+
+// Requête SQL pour compter le nombre total de produits
+$sqlCount = 'SELECT COUNT(employee_id) AS nom_administrateurs FROM employees';
+$stmtCount = $db->prepare($sqlCount);
+$stmtCount->execute();
+$total_Employees = $stmtCount->fetchColumn();
+
+// Calcul du nombre total de pages
+$total_pages = ceil($total_Employees / $nbParPage);
+
+// Calcul de l'offset pour la pagination
+$offset = ($page - 1) * $nbParPage;
 
 // Vérification si le formulaire de recherche a été soumis
 if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) && $_POST['type'] === 'nom') {
     // Construction de la requête de recherche par nom
     $searchTerm = '%' . $_POST['search'] . '%'; // Ajout des jokers % pour la recherche partielle
-    $sqlAdministrateurs = 'SELECT * FROM administrateurs WHERE nom_administrateurs LIKE :nom_administrateurs ORDER BY id_administrateurs DESC LIMIT :limit OFFSET :offset';
-    $stmtAdministrateurs = $db->prepare($sqlAdministrateurs);
-    $stmtAdministrateurs->bindValue(':limit', $nbParPage, PDO::PARAM_INT);
-    $stmtAdministrateurs->bindValue(':offset', $offset, PDO::PARAM_INT);
-    $stmtAdministrateurs->bindValue(':nom_administrateurs', $searchTerm, PDO::PARAM_STR);
-    $stmtAdministrateurs->execute();
-    $recordset = $stmtProducts->fetchAll();
+    $sqlEmployees = 'SELECT * FROM employees WHERE employee_id LIKE :last_name ORDER BY employee_id DESC LIMIT :limit OFFSET :offset';
+    $stmtEmployees = $db->prepare($sqlEmployees);
+    $stmtEmployees->bindValue(':limit', $nbParPage, PDO::PARAM_INT);
+    $stmtEmployees->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $stmtEmployees->bindValue(':last_name', $searchTerm, PDO::PARAM_STR);
+    $stmtEmployees->execute();
+    $recordset = $stmtEmployees->fetchAll();
 } else {
     // Requête SQL pour récupérer les produits de la page actuelle
-    $sqlAdministrateurs = 'SELECT * FROM administrateurs ORDER BY id_administrateurs DESC LIMIT :limit OFFSET :offset';
-    $stmtAdministrateurs = $db->prepare($sqlAdministrateurs);
-    $stmtAdministrateurs->bindValue(':limit', $nbParPage, PDO::PARAM_INT);
-    $stmtAdministrateurs->bindValue(':offset', $offset, PDO::PARAM_INT);
-    $stmtAdministrateurs->execute();
-    $recordset = $stmtAdministrateurs->fetchAll();
+    $sqlEmployees = 'SELECT * FROM employees ORDER BY employee_id DESC LIMIT :limit OFFSET :offset';
+    $stmtEmployees = $db->prepare($sqlEmployees);
+    $stmtEmployees->bindValue(':limit', $nbParPage, PDO::PARAM_INT);
+    $stmtEmployees->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $stmtEmployees->execute();
+    $recordset = $stmtEmployees->fetchAll();
 }
 
 ?>
@@ -39,6 +62,7 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>DashBord</title>
 </head>
 <body>
@@ -57,28 +81,36 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
        <div class="container">
         <div class="tableau-de-bord">
             <h1>DashBoard</h1>
-            <div class="Gestion-de-l-utilisateur">
-                    
-                <div class="Administrateurs container">
+            
+            <div class="gestion-utilisateur">
+                <button id="btnDisplay" onclick="showstuff('divSubsides','this' ); return false">Gestion des Administrateurs</button>
+                <div class="divSubsides container">
                     <h2>Gestion des Administrateurs</h2>
+                    <?php foreach($recordset as $row){ ?>
+                    <div class="card-admin border=solid 1x black">
+                        <table>
+                            <tr>
+                                <td><p class="card-admin-num">N° de l'administrateur : <?= htmlspecialchars($row['employee_id']);?></p></td>
+                                <td><p class="card-admin-nom">Nom de l'Administrateur : <?= htmlspecialchars($row['last_name']);?></p></td>
+                                <td><p class="card-admin-tel">Poste : <?= htmlspecialchars($row['position']);?></p></td>
+                                <td><p class="card-admin-email">Date d'entree :  <?= htmlspecialchars($row['hire_date']);?></p></td>
+                            </tr>
+                        </table>
+                        <?php } ?> 
+                    </div>
                     <div class="ajouter-un-administrateur">
-                        <a href="#">Ajouter un Administrateur</a>
+                        <a href="ajouter-une-administrateur.php">Ajouter un Administrateur</a>
                         <h1>Ajout d'un administrateur</h1>
-                        <form action="" method="post">
-                            <label for="nom_administrateurs">Nom de l'administrateur : </label>
-                            <input type="text" id ="nom_administrateurs" name="nom_administrateurs" value="<?= htmlspecialchars($row['nom_administrateurs'])?>">
-                            
-                            <label for="mot_de_passe_hash">Mot de passe : </label>
-                            <input type="text" id ="mot_de_passe_hash" name="mot_de_passe_hash" value="<?= htmlspecialchars($row['mot_de_passe_hash'])?>">
-                        </form>
-                    </div>
-                    </div>
-                    <div class="liste-des-administrateurs">
-                        <a href="liste-des-administrateurs.php">Liste des Administrateurs</a>
+                       
                     </div>
                 </div>
-    
-                <div class="depenses container">
+                <div class="liste-des-administrateurs">
+                    <a href="liste-des-administrateurs.php">Liste des Administrateurs</a>
+                </div>
+            </div>
+                    
+                <button id="btnDisplay" onclick="showstuff('divSubsides','this' ); return false">Gestion des Depenses</button>       
+                <div class="divSubsides container">
                     <h2>Gestion des Depenses</h2>
                     <div class="ajouter-une-depense">
                         <a href="ajouter-une-depense.php">Ajouter une Depense</a>
@@ -87,8 +119,9 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
                     </div>
                 </div>
                 </div>
-
-                <div class="reservations container">
+            
+                <button id="btnDisplay" onclick="showstuff('divSubsides','this' ); return false">Gestion des Reservations</button>  
+                <div class="divSubsides container">
                     <h2>Gestion des Reservations</h2>
                     <div class="ajouter-une-reservation">
                         <a href="ajouter-une-reservation.php">Ajouter une Reservation</a>
@@ -98,8 +131,9 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
                     </div>
                 </div>
                 </div>
-
-                <div class="stocks container">
+                
+                <button id="btnDisplay" onclick="showstuff('divSubsides','this' ); return false">Gestion des Stocks</button>  
+                <div class="divSubsides container">
                     <h2>Gestion des Stocks</h2>
                     <div class="ajouter-un-stock">
                         <a href="ajouter-un-stock.php">Ajouter un Stock</a>
@@ -110,7 +144,8 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
                 </div>
                 </div>
 
-                <div class="transactions container">
+                <button id="btnDisplay" onclick="showstuff('divSubsides','this' ); return false">Gestion des Transactions</button>  
+                <div class="divSubsides container">
                     <h2>Gestion des Transactions</h2>
                     <div class="ajouter-une-transaction">
                         <a href="ajouter-une-transaction.php" id="show-form-1" data-active-forms="form-2,form-3,form-4,form-5,form-6,form-7,form-8,form-9">Ajouter une Transaction</a>
@@ -121,7 +156,8 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
                 </div>
                 </div>
 
-                <div class="commentaires">
+                <button id="btnDisplay" onclick="showstuff('divSubsides','this' ); return false">Gestion des Commentaires</button>  
+                <div class="divSubsides">
                     <h2>Gestion des Commentaires</h2>
                     <div class="ajouter-un-commentaire">
                         <a href="ajouter-un-commentaire.php" id="show-form-2" data-active-forms="form-1,form-3,form-4,form-5,form-6,form-7,form-8,form-9">Ajouter un Commentaire</a>
@@ -132,7 +168,8 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
                 </div>
                 </div>
 
-                <div class="documents container">
+                <button id="btnDisplay" onclick="showstuff('divSubsides','this' ); return false">Gestion des Documents</button>  
+                <div class="divSubsides container">
                     <h2>Gestion des Documents</h2>
                     <div class="ajouter-un-document">
                         <a href="ajouter-un-document.php"id="show-form-3" data-active-forms="form-1,form-2,form-4,form-5,form-6,form-7,form-8,form-9">Ajouter un Document</a>
@@ -143,7 +180,8 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
                 </div>
                 </div>
 
-                <div class="employes container">
+                <button id="btnDisplay" onclick="showstuff('divSubsides','this' ); return false">Gestion des Employés</button>  
+                <div class="divSubsides container">
                     <h2>Gestion des Employés</h2>
                     <div class="ajouter-un-employe">
                         <a href="ajouter-un-employe.php"id="show-form-4" data-active-forms="form-1,form-2,form-3,form-5,form-6,form-7,form-8,form-9">Ajouter un Employé</a>
@@ -154,7 +192,8 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
                 </div>
                 </div>
 
-                <div class="fournisseurs container">
+                <button id="btnDisplay" onclick="showstuff('divSubsides','this' ); return false">Gestion des Fournisseurs</button>  
+                <div class="divSubsides container">
                     <h2>Gestion des Fournisseurs</h2>
                     <div class="ajouter-un-fournisseur">
                         <a href="ajouter-un-fournisseur.php" id="show-form-5"  data-active-forms="form-1,form-2,form-3,form-4,form-6,form-7,form-8,form-9">Ajouter un Fournisseur</a>
@@ -165,7 +204,8 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
                 </div>
                 </div>
 
-                <div class="menus">
+                <button id="btnDisplay" onclick="showstuff('divSubsides','this' ); return false">Gestion des Menus</button>  
+                <div class="divSubsides">
                     <h2>Gestion des Menus</h2>
                     <div class="ajouter-un-menu">
                         <a href="ajouter-un-menu.php" id="show-form-6" data-active-forms="form-2,form-3,form-4,form-5,form-7,form-8,form-9">Ajouter un Menu</a>
@@ -176,7 +216,8 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
                 </div>
                 </div>
 
-                <div class="platsdujour container">
+                <button id="btnDisplay" onclick="showstuff('divSubsides','this' ); return false">Gestion des Plats du Jour</button>  
+                <div class="divSubsides container">
                     <h2>Gestion des Plats du Jour</h2>
                     <div class="ajouter-un-plats-du-jour">
                         <a href="ajouter-un-plats-du-jour.php"  id="show-form-7" data-active-forms="form-2,form-3,form-4,form-5,form-6,form-8,form-9">Ajouter un Plat du Jour</a>
@@ -187,7 +228,8 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
                 </div>
                 </div>
 
-                <div class="promotions container">
+                <button id="btnDisplay" onclick="showstuff('divSubsides','this' ); return false">Gestion des Promotions</button>  
+                <div class="divSubsides container">
                     <h2>Gestion des Promotions</h2>
                     <div class="ajouter-une-promotion">
                         <a href="ajouter-une-promotion.php" id="show-form-8" data-active-forms="form-2,form-3,form-4,form-5,form-6,form-7,form-9">Ajouter une Promotion</a>
@@ -198,8 +240,9 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
                 </div>
                 </div>
 
-                <div class="statistiques container">
-                    <h2>Gestion des Statistiques</h2>
+                <button id="btnDisplay" onclick="showstuff('divSubsides','this' ); return false">Statistiques</button>  
+                <div class="divSubsides container">
+                    <h2>Statistiques</h2>
                     <div class="ajouter-une-statistique">
                         <a href="ajouter-une-statistique.php" id="show-form-9" data-active-forms="form-1,form-2,form-3,form-4,form-5,form-6,form-7,form-8">Ajouter une Statistique</a>
                     </div>
@@ -210,5 +253,39 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
             </div>
        </div>
     </section>
+
+      <!-- Pagination -->
+      <ul class="pagination">
+        <?php 
+        // Lien vers la première page
+        echo '<li class="page-item"><a class="page-link" href="index.php?page=1">&laquo;&laquo;</a></li>';
+
+       
+        $prev_page = max(1, $page - 1);
+         // Lien vers la page précédente
+        echo '<li class="page-item"><a class="page-link" href="index.php?page=' . $prev_page . '">&laquo;</a></li>';
+
+        // Tranche de pagination
+        $tranche = 5;
+        $start_page = max(1, $page - floor($tranche / 2));
+        $end_page = min($total_pages, $start_page + $tranche - 1);
+
+        // Affichage des liens de pagination
+        for ($i = $start_page; $i <= $end_page; $i++) {
+            echo '<li class="page-item';
+            if ($i == $page) echo ' active';
+            echo '"><a class="page-link" href="index.php?page=' . $i . '">' . $i . '</a></li>';
+        }
+
+        // Lien vers la page suivante
+        $next_page = min($total_pages, $page + 1);
+        echo '<li class="page-item"><a class="page-link" href="index.php?page=' . $next_page . '">&raquo;</a></li>';
+
+        // Lien vers la dernière page
+        echo '<li class="page-item"><a class="page-link" href="index.php?page=' . $total_pages . '">&raquo;&raquo;</a></li>';
+    ?>
+</ul>
+
 </body>
+<script src="./"></script>
 </html>

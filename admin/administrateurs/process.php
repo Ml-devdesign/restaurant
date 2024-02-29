@@ -29,7 +29,7 @@ $data = array();
 // Parcours des données du formulaire
 foreach ($_POST as $key => $value) {
     // Ignorer les valeurs vides et la clé 'product_id'
-    if ($value !== '' && $key !== 'id_administrateurs') {
+    if ($value !== '' && $key !== 'employee_id') {
         // Ajout de la clé et de la valeur au tableau $data
         $data[$key] = $value;
     }
@@ -38,7 +38,7 @@ foreach ($_POST as $key => $value) {
 // Vérifier si des données ont été soumises
 if (!empty($data)) {
     // Vérifier si la clé 'product_id' est définie dans les données POST
-    if(isset($_POST['id_administrateurs']) && !empty($_POST['id_administrateurs'])) {
+    if(isset($_POST['employee_id']) && !empty($_POST['employee_id'])) {
         // Mise à jour d'un produit existant
 
         // Construction de la partie SET de la requête UPDATE
@@ -50,12 +50,12 @@ if (!empty($data)) {
         $setSql = rtrim($setSql, ", ");
 
         // Construction de la requête SQL
-        $sql = "UPDATE administrateurs SET 
+        $sql = "UPDATE employees SET 
                 $setSql
-                WHERE id_administrateurs = :id_administrateurs";
+                WHERE employees = :employee_id";
     } else {
         // Ajout d'un nouveau produit
-        $sql = "INSERT INTO administrateurs (";
+        $sql = "INSERT INTO employees (";
         $valuesSql = "";
         $updateSql = "";
 
@@ -80,8 +80,8 @@ if (!empty($data)) {
     }
 
     // Si c'est une mise à jour, lier également le product_id
-    if(isset($_POST['id_administrateurs']) && !empty($_POST['id_administrateurs'])) {
-        $stmt->bindValue(":id_administrateurs", $_POST['id_administrateurs']);
+    if(isset($_POST['employee_id']) && !empty($_POST['employee_id'])) {
+        $stmt->bindValue(":employee_id", $_POST['employee_id']);
     }
 
     // Exécution de la requête SQL
