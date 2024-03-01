@@ -1,3 +1,4 @@
+
 <?php 
     require_once $_SERVER["DOCUMENT_ROOT"] ."/admin/include/connect.php";
     if (isset($_POST['login']) && isset($_POST['password'])){
@@ -45,16 +46,16 @@
                 <a href="forget.php">Forget Password</a>
             </div>
             <div class="error">
-         <?php
+         <php
                     if (isset($_SESSION['error'])) {
                         echo $_SESSION['error'];
                         unset($_SESSION['error']);
                     }
-             ?>       -->
+             ?>     
 
              </div>
              <div class="success">
-                <?php
+                <php
                     if (isset($_SESSION['success'])) {
                         echo $_SESSION['success'];
                         unset($_SESSION['success']);
