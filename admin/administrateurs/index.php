@@ -95,27 +95,27 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
     
 <section> 
 <div class="container">
-    <button class="btnDisplay" data-target="divSubsides" onclick="showstuff('divSubsides','this' ); return false">Gestion des Administrateurs</button>
-    <button class="btnDisplay" data-target="divSubsidesDepenses" onclick="showstuff('divSubsidesDepenses','this' ); return false">Gestion des Dépenses</button>   
-    <button class="btnDisplay" data-target="divSubsidesReservations" onclick="showstuff('divSubsidesReservations','this' ); return false">Gestion des Réservations</button>  
-    <button class="btnDisplay" data-target="divSubsidesStocks" onclick="showstuff('divSubsidesStocks','this' ); return false">Gestion des Stocks</button>  
-    <button class="btnDisplay" data-target="divSubsidesTransactions" onclick="showstuff('divSubsidesTransactions','this' ); return false">Gestion des Transactions</button>  
-    <button class="btnDisplay" data-target="divSubsidesCommentaires" onclick="showstuff('divSubsidesCommentaires','this' ); return false">Gestion des Commentaires</button>  
-    <button class="btnDisplay" data-target="divSubsidesDocuments" onclick="showstuff('divSubsidesDocuments','this' ); return false">Gestion des Documents</button>  
-    <button class="btnDisplay" data-target="divSubsidesEmployés" onclick="showstuff('divSubsidesEmployés','this' ); return false">Gestion des Employés</button>  
-    <button class="btnDisplay" data-target="divSubsidesFournisseurs" onclick="showstuff('divSubsidesFournisseurs','this' ); return false">Gestion des Fournisseurs</button>  
-    <button class="btnDisplay" data-target="divSubsidesMenus" onclick="showstuff('divSubsidesMenus','this' ); return false">Gestion des Menus</button> 
-    <button class="btnDisplay" data-target="divSubsidesPlatsduJour" onclick="showstuff('divSubsidesPlatsduJour','this' ); return false">Gestion des Plats du Jour</button>  
-    <button class="btnDisplay" data-target="divSubsidesPromotions" onclick="showstuff('divSubsidesPromotions','this' ); return false">Gestion des Promotions</button>  
-    <button class="btnDisplay" data-target="divSubsidesStatistiques" onclick="showstuff('divSubsidesStatistiques','this' ); return false">Statistiques</button>  
+    <button class="btnDisplay" data-target="divSubsides" onclick="showStuff('divSubsides','divSubsides' ); return false">Gestion des Administrateurs</button>
+    <button class="btnDisplay" data-target="divSubsidesDepenses" onclick="showStuff('divSubsidesDepenses','divSubsidesDepenses' ); return false">Gestion des Dépenses</button>   
+    <button class="btnDisplay" data-target="divSubsidesReservations" onclick="showStuff('divSubsidesReservations','divSubsidesReservations' ); return false">Gestion des Réservations</button>  
+    <button class="btnDisplay" data-target="divSubsidesStocks" onclick="showStuff('divSubsidesStocks','divSubsidesStocks' ); return false">Gestion des Stocks</button>  
+    <button class="btnDisplay" data-target="divSubsidesTransactions" onclick="showStuff('divSubsidesTransactions','divSubsidesTransactions' ); return false">Gestion des Transactions</button>  
+    <button class="btnDisplay" data-target="divSubsidesCommentaires" onclick="showStuff('divSubsidesCommentaires','divSubsidesCommentaires' ); return false">Gestion des Commentaires</button>  
+    <button class="btnDisplay" data-target="divSubsidesDocuments" onclick="showStuff('divSubsidesDocuments','divSubsidesDocuments' ); return false">Gestion des Documents</button>  
+    <button class="btnDisplay" data-target="divSubsidesEmployés" onclick="showStuff('divSubsidesEmployés','divSubsidesEmployés' ); return false">Gestion des Employés</button>  
+    <button class="btnDisplay" data-target="divSubsidesFournisseurs" onclick="showStuff('divSubsidesFournisseurs','divSubsidesFournisseurs' ); return false">Gestion des Fournisseurs</button>  
+    <button class="btnDisplay" data-target="divSubsidesMenus" onclick="showStuff('divSubsidesMenus','divSubsidesMenus' ); return false">Gestion des Menus</button> 
+    <button class="btnDisplay" data-target="divSubsidesPlatsduJour" onclick="showStuff('divSubsidesPlatsduJour','divSubsidesPlatsduJour' ); return false">Gestion des Plats du Jour</button>  
+    <button class="btnDisplay" data-target="divSubsidesPromotions" onclick="showStuff('divSubsidesPromotions','divSubsidesPromotions' ); return false">Gestion des Promotions</button>  
+    <button class="btnDisplay" data-target="divSubsidesStatistiques" onclick="showStuff('divSubsidesStatistiques','divSubsidesStatistiques' ); return false">Statistiques</button>  
 </div>
-
 </section>
+
 <section>
-<div class="tableau-de-bord">
+<div class=" tableau-de-bord">
         <h1>DashBoard</h1>
        
-        <div class="divSubsides">
+        <div class="divSubsides container">
             <h2>Gestion des Administrateurs</h2>
             <?php foreach($recordset as $row){ ?>
             <div class="card-admin border=solid 1x black">
@@ -127,27 +127,28 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
                         <td><p class="card-admin-email">Date d'entree :  <?= htmlspecialchars($row['hire_date']);?></p></td>
                     </tr>
                 </table>
-                <?php } ?> 
-            </div>
+            </div>  
+            <?php } ?> 
             <div class="ajouter-un-administrateur">
                 <a href="ajouter-une-administrateur.php">Ajouter un Administrateur</a>
                 <h2>Ajout d'un administrateur</h2>
             </div>
             <div class="liste-des-administrateurs">
-            <a href="liste-des-administrateurs.php">Liste des Administrateurs</a>
+                <a href="liste-des-administrateurs.php">Liste des Administrateurs</a>
+            </div>
         </div>
      
-        <div class="divSubsides" class="container">
+        <div class="divSubsidesDepenses divSubsides">
             <h2>Gestion des Depenses</h2>
             <div class="ajouter-une-depense">
                 <a href="ajouter-une-depense.php">Ajouter une Depense</a>
-            <div class="liste-des-depenses">
-                <a href="liste-des-depenses.php">Liste des Depenses</a>
+                <div class="liste-des-depenses">
+                    <a href="liste-des-depenses.php">Liste des Depenses</a>
+                </div>
             </div>
         </div>
-        </div>
     
-        <div class="divSubsides"  class="container">
+        <div class="divSubsidesReservations divSubsides">
             <h2>Gestion des Reservations</h2>
             <div class="ajouter-une-reservation">
                 <a href="ajouter-une-reservation.php">Ajouter une Reservation</a>
@@ -157,7 +158,7 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
             </div>
         </div>
         
-        <div class="divSubsides"  class="container">
+        <div class="divSubsidesStocks divSubsides">
             <h2>Gestion des Stocks</h2>
             <div class="ajouter-un-stock">
                 <a href="ajouter-un-stock.php">Ajouter un Stock</a>
@@ -167,7 +168,7 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
             </div>
         </div>
 
-        <div class="divSubsides"  class="container">
+        <div class="divSubsidesTransactions divSubsides">
             <h2>Gestion des Transactions</h2>
             <div class="ajouter-une-transaction">
                 <a href="ajouter-une-transaction.php" id="show-form-1" data-active-forms="form-2,form-3,form-4,form-5,form-6,form-7,form-8,form-9">Ajouter une Transaction</a>
@@ -177,7 +178,7 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
             </div>
         </div>
 
-        <div class="divSubsides"  class="container">
+        <div class="divSubsidesCommentaires divSubsides">
             <h2>Gestion des Commentaires</h2>
             <div class="ajouter-un-commentaire">
                 <a href="ajouter-un-commentaire.php" id="show-form-2" data-active-forms="form-1,form-3,form-4,form-5,form-6,form-7,form-8,form-9">Ajouter un Commentaire</a>
@@ -187,7 +188,7 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
             </div>
         </div>
 
-        <div class="divSubsides"  class="container">
+        <div class="divSubsidesDocuments divSubsides">
             <h2>Gestion des Documents</h2>
             <div class="ajouter-un-document">
                 <a href="ajouter-un-document.php"id="show-form-3" data-active-forms="form-1,form-2,form-4,form-5,form-6,form-7,form-8,form-9">Ajouter un Document</a>
@@ -197,7 +198,7 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
             </div>
         </div>
 
-        <div class="divSubsides"  class="container">
+        <div class="divSubsidesEmployés divSubsides">
             <h2>Gestion des Employés</h2>
             <div class="ajouter-un-employe">
                 <a href="ajouter-un-employe.php"id="show-form-4" data-active-forms="form-1,form-2,form-3,form-5,form-6,form-7,form-8,form-9">Ajouter un Employé</a>
@@ -206,9 +207,9 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
                 <a href="liste-des-employes.php"  id="show-form-4" data-active-forms="form-1,form-2,form-3,form-5,form-6,form-7,form-8,form-9" >Liste des Employés</a>
             </div>
         </div>
-        </div>
+        
 
-        <div class="divSubsides"  class="container">
+        <div class="divSubsidesFournisseurs divSubsides">
             <h2>Gestion des Fournisseurs</h2>
             <div class="ajouter-un-fournisseur">
                 <a href="ajouter-un-fournisseur.php" id="show-form-5"  data-active-forms="form-1,form-2,form-3,form-4,form-6,form-7,form-8,form-9">Ajouter un Fournisseur</a>
@@ -218,7 +219,7 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
             </div>
         </div>
 
-        <div class="divSubsides"  class="container">
+        <div class="divSubsidesMenus divSubsides">
             <h2>Gestion des Menus</h2>
             <div class="ajouter-un-menu">
                 <a href="ajouter-un-menu.php" id="show-form-6" data-active-forms="form-2,form-3,form-4,form-5,form-7,form-8,form-9">Ajouter un Menu</a>
@@ -229,7 +230,7 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
         </div>
 
          
-        <div class="divSubsides"  class="container">
+        <div class="divSubsidesPlatsduJour divSubsides">
             <h2>Gestion des Plats du Jour</h2>
             <div class="ajouter-un-plats-du-jour">
                 <a href="ajouter-un-plats-du-jour.php"  id="show-form-7" data-active-forms="form-2,form-3,form-4,form-5,form-6,form-8,form-9">Ajouter un Plat du Jour</a>
@@ -239,7 +240,7 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
             </div>
         </div>
 
-        <div class="divSubsides"  class="container">
+        <div class="divSubsidesPromotions divSubsides">
             <h2>Gestion des Promotions</h2>
             <div class="ajouter-une-promotion">
                 <a href="ajouter-une-promotion.php" id="show-form-8" data-active-forms="form-2,form-3,form-4,form-5,form-6,form-7,form-9">Ajouter une Promotion</a>
@@ -249,7 +250,7 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
             </div>
         </div>
 
-        <div class="divSubsides"  class="container">
+        <div class="divSubsidesStatistiques divSubsides">
             <h2>Statistiques</h2>
             <div class="ajouter-une-statistique">
                 <a href="ajouter-une-statistique.php" id="show-form-9" data-active-forms="form-1,form-2,form-3,form-4,form-5,form-6,form-7,form-8">Ajouter une Statistique</a>

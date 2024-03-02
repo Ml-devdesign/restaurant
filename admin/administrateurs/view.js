@@ -2,51 +2,51 @@
 /////////////////////////////////////////// Div Subsides and button showStuff
 //conseille pro : faire un fichier pour chaque chose donc je doit fair un fichier pour le formulaire avec un include pour le boutton qui auras lui meme un fichier tout seul dans le js pour ces different fonction   et des include pour les form ou autre  dans le ficher html qu ne contiendras finalement pas grand chose
 //bien verifier le chemin lorceque la console parle de mime  
+// Attend que le contenu de la page soit chargé avant d'exécuter le script
 document.addEventListener("DOMContentLoaded", function() {
-    const btnDisplay = document.querySelectorAll('div.btnDisplay');
+    // Sélectionne tous les éléments avec la classe '.btnDisplay' (boutons)
+    const btnDisplay = document.querySelectorAll('.btnDisplay');
 
+    // Ajoute un écouteur d'événements à chaque bouton
     btnDisplay.forEach(function(button) {
         button.addEventListener('click', function() {
+            // Récupère l'ID cible depuis l'attribut 'data-target' du bouton
             const targetId = button.getAttribute('data-target');
+            // Appelle la fonction showStuff avec l'ID cible en paramètre
             showStuff(targetId);
         });
     });
 });
 
-/////////////////////////////////////////// Div Subsides and button showStuff
-// const btnDisplay = document.getElementById('btnDisplay');
-// const divSubsides = document.getElementById('#divSubsidesDepenses');
-
-
-//pour les container et non pour les bouton un queryselector(all) avec foreach
+// Fonction pour afficher ou masquer les éléments en fonction de leur ID
 function showStuff(divId) {
-    const divToToggle = document.querySelectorAll(divId);
-    if(divToToggle.style.display === 'none' || divToToggle.style.display === "") {
-        divToToggle.style.display = 'block';
+    // Sélectionne tous les éléments avec la classe correspondant à l'ID fourni
+    const divToToggle = document.querySelectorAll('.' + divId);
+    // Vérifie s'il y a des éléments correspondants
+    if (divToToggle.length > 0) {
+        // Parcourt tous les éléments correspondants
+        divToToggle.forEach(function(element) {
+            // Vérifie l'état actuel de l'élément (affiché ou masqué)
+            if (element.style.display === 'none' || element.style.display === "") {
+                // Si l'élément est masqué, le rendre visible
+                element.style.display = 'block';
+            } else {
+                // Sinon, masquer l'élément
+                element.style.display = 'none';
+            }
+        });
     } else {
-        divToToggle.style.display = 'none';
-    }   
+        // Affiche un message d'erreur si aucun élément correspondant n'est trouvé
+        console.error("Element with class '" + divId + "' not found.");
+    }
 }
-btnDisplay.addEventListener('click', function() {
-    showStuff("divSubsides");
+
+// Masque tous les éléments au chargement de la page
+const allDivs = document.querySelectorAll('.divSubsides');
+allDivs.forEach(function(div) {
+    // Masque chaque élément en le rendant 'none'
+    div.style.display = 'none';
 });
-
-// const btnDisplay = document.getElementById('#btnDisplay');
-// const divSubsidesDepenses = document.getElementById('divSubsidesDepenses');
-// const divSubsidesReservations = document.getElementById('divSubsidesReservations');
-// const divSubsidesStocks = document.getElementById('divSubsidesStocks');
-// const divSubsidesTransactions = document.getElementById('divSubsidesTransactions');
-// const divSubsidesCommentaires = document.getElementById('divSubsidesCommentaires');
-// const divSubsidesDocuments = document.getElementById('divSubsidesDocuments');
-// const divSubsidesEmployés = document.getElementById('divSubsidesEmployés');
-// const divSubsidesFournisseurs = document.getElementById('divSubsidesFournisseurs');
-// const divSubsidesMenus = document.getElementById('divSubsidesMenus');
-// const divSubsidesPlatsduJour = document.getElementById('divSubsidesPlatsduJour');
-// const divSubsidesPromotions = document.getElementById('divSubsidesPromotions');
-// const divSubsidesStatistiques = document.getElementById('divSubsidesStatistiques');
-
-
-
 ///////////////////////////////////////// Liste de tous vos formulaires
 var forms = ['form-1', 'form-2', 'form-3', 'form-4', 'form-5', 'form-6', 'form-7', 'form-8', 'form-9'];
 
