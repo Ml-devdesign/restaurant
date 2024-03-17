@@ -89,8 +89,7 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
             </ul>
         </nav>
        </div>
-      
-</section>        
+    </section>        
           
     
 <section> 
