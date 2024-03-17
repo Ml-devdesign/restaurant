@@ -1,19 +1,23 @@
 
 <?php 
     require_once $_SERVER["DOCUMENT_ROOT"] ."/admin/include/connect.php";
+//Superglobales  POST = PUBLIER les données du formulaire de recherche est un tableau de variables 
+// passées au script courant via la méthode HTTP POST
+// POST est un tableau de variables, passées au script courant, 
+// la méthode POST sont invisibles pour les autres 
+// (tous les noms/valeurs sont incorporés dans le corps de la requête HTTP) 
+// et n’a pas de limite quant à la quantité d’informations à envoyer.
     if (isset($_POST['login']) && isset($_POST['password'])){
         $sql = "SELECT * FROM employees WHERE last_name=:login";
         $stmt = $db->prepare($sql);
         $stmt ->execute([':login' => $_POST["login"]]);
-
         if ($row = $stmt -> fetch()){
             if (password_verify($_POST['password'], $row['password_hash'])) {
                 session_start();
                 $_SESSION["user_connected"] = "ok";
-                header("Location: /admin/administrateurs/index.php");
+                header("Location:index.php");
                 exit();
             }   
-            
         }
     }
 ?>

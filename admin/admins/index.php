@@ -1,8 +1,13 @@
 
 <?php 
 // Inclusion des fichiers de protection et de connexion à la base de données
-//  include $_SERVER["DOCUMENT_ROOT"] . "/admin/include/protect.php";
+//pour le include lors de linclusion de fichier il ce fait deux fois en ce qui concerne des fonction ou autre le include_once et preferable pour la gestion de plusier n'element nest preferable 
+
+//include $_SERVER["DOCUMENT_ROOT"] . "/admin/include/protect.php";
 require_once $_SERVER["DOCUMENT_ROOT"]. "/admin/include/connect.php";
+//DOCUMENT_ROOT -> C:\wamp\www\leprojet\ et le point de depart chemin de stockage alouer dans une reppertoir chemi non visible adaptable sur nimport quel serveur 
+
+//devoir cinder les fichier avec le include et require pour le gestion du code et son maintient 
 
 // ini_set('display_errors', 1);
 // ini_set('display_startup_errors', 1);
@@ -11,7 +16,7 @@ require_once $_SERVER["DOCUMENT_ROOT"]. "/admin/include/connect.php";
 // Définition du nombre d'éléments à afficher par page
 $nbParPage = 16;
 
-// Récupération du numéro de la page à afficher depuis les paramètres GET
+// Récupération du numéro de la page à afficher depuis les paramètres GET // isset dit si est definie 
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
 
 // Vérification et correction du numéro de page
@@ -30,8 +35,16 @@ $total_pages = ceil($total_Employees / $nbParPage);
 
 // Calcul de l'offset pour la pagination
 $offset = ($page - 1) * $nbParPage;
+/*
+GET OBTENIR les données du formulaire de recherche, 
+est un tableau de variables passées au script courant via les paramètres de l’URL
+la méthode GET sont visibles par tout le monde
+Ce sont des superglobales --> ils sont toujours accessibles, quelle que soit 
+leur portée - et que vous pouvez y accéder depuis n’importe quelle fonction, 
+classe ou fichier sans avoir à faire quoi que ce soit de spécial.
+Vérification si le formulaire de recherche a été soumis
+*/
 
-// Vérification si le formulaire de recherche a été soumis
 if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) && $_POST['type'] === 'nom') {
     // Construction de la requête de recherche par nom
     $searchTerm = '%' . $_POST['search'] . '%'; // Ajout des jokers % pour la recherche partielle
@@ -73,49 +86,48 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
     <link rel="stylesheet" href="./admin/css/icomoon.css">
     <link rel="stylesheet" href="./admin/css/responsive.css"> -->
     <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <!-- <script src="/" defer></script> -->
+    <script defer src="/admin/admins/view.js"></script>
 
-    <title>DashBord</title>
+   
 </head>
 <body>
-    <section>
-       <div class="container">
-        <nav>
-            <ul>
-                <li><a href="index.php">Accueil</a></li>
-                <li><a href="menu.php">Menu</a></li>
-                <li><a href="reservation.php">Reservation</a></li>
-                <li><a href="contact.php">Contact</a></li>
-                <li><a href="logout.php">Logout</a></li>
-            </ul>
-        </nav>
-       </div>
-    </section>        
-          
-    
-<section> 
-<div class="container">
-    <button class="btnDisplay" data-target="divSubsides" onclick="showStuff('divSubsides','divSubsides' ); return false">Gestion des Administrateurs</button>
-    <button class="btnDisplay" data-target="divSubsidesDepenses" onclick="showStuff('divSubsidesDepenses','divSubsidesDepenses' ); return false">Gestion des Dépenses</button>   
-    <button class="btnDisplay" data-target="divSubsidesReservations" onclick="showStuff('divSubsidesReservations','divSubsidesReservations' ); return false">Gestion des Réservations</button>  
-    <button class="btnDisplay" data-target="divSubsidesStocks" onclick="showStuff('divSubsidesStocks','divSubsidesStocks' ); return false">Gestion des Stocks</button>  
-    <button class="btnDisplay" data-target="divSubsidesTransactions" onclick="showStuff('divSubsidesTransactions','divSubsidesTransactions' ); return false">Gestion des Transactions</button>  
-    <button class="btnDisplay" data-target="divSubsidesCommentaires" onclick="showStuff('divSubsidesCommentaires','divSubsidesCommentaires' ); return false">Gestion des Commentaires</button>  
-    <button class="btnDisplay" data-target="divSubsidesDocuments" onclick="showStuff('divSubsidesDocuments','divSubsidesDocuments' ); return false">Gestion des Documents</button>  
-    <button class="btnDisplay" data-target="divSubsidesEmployés" onclick="showStuff('divSubsidesEmployés','divSubsidesEmployés' ); return false">Gestion des Employés</button>  
-    <button class="btnDisplay" data-target="divSubsidesFournisseurs" onclick="showStuff('divSubsidesFournisseurs','divSubsidesFournisseurs' ); return false">Gestion des Fournisseurs</button>  
-    <button class="btnDisplay" data-target="divSubsidesMenus" onclick="showStuff('divSubsidesMenus','divSubsidesMenus' ); return false">Gestion des Menus</button> 
-    <button class="btnDisplay" data-target="divSubsidesPlatsduJour" onclick="showStuff('divSubsidesPlatsduJour','divSubsidesPlatsduJour' ); return false">Gestion des Plats du Jour</button>  
-    <button class="btnDisplay" data-target="divSubsidesPromotions" onclick="showStuff('divSubsidesPromotions','divSubsidesPromotions' ); return false">Gestion des Promotions</button>  
-    <button class="btnDisplay" data-target="divSubsidesStatistiques" onclick="showStuff('divSubsidesStatistiques','divSubsidesStatistiques' ); return false">Statistiques</button>  
-</div>
-</section>
+<section class="menu">
+<title>DashBord</title>
+    <div class="">
+    <nav>
+        <ul>
+            <li><a href="index.php">Accueil</a></li>
+            <li><a href="menu.php">Menu</a></li>
+            <li><a href="reservation.php">Reservation</a></li>
+            <li><a href="contact.php">Contact</a></li>
+            <li><a href="logout.php">Logout</a></li>
+        </ul>
+    </nav>
+    </div>
+</section>        
 
 <section>
-<div class=" tableau-de-bord">
-        <h1>DashBoard</h1>
-       
-        <div class="divSubsides container">
-            <h2>Gestion des Administrateurs</h2>
+    <div class="tableau-de-bord">
+    <h1>DashBoard</h1>
+        <div class="container">
+            <button class="btnDisplay" data-target="divSubsides">Gestion des Administrateurs</button>
+            <button class="btnDisplay" data-target="divSubsidesDepenses">Gestion des Dépenses</button>   
+            <button class="btnDisplay" data-target="divSubsidesReservations">Gestion des Réservations</button>  
+            <button class="btnDisplay" data-target="divSubsidesStocks">Gestion des Stocks</button>  
+            <button class="btnDisplay" data-target="divSubsidesTransactions">Gestion des Transactions</button>  
+            <button class="btnDisplay" data-target="divSubsidesCommentaires">Gestion des Commentaires</button>  
+            <button class="btnDisplay" data-target="divSubsidesDocuments">Gestion des Documents</button>  
+            <button class="btnDisplay" data-target="divSubsidesEmployés">Gestion des Employés</button>  
+            <button class="btnDisplay" data-target="divSubsidesFournisseurs">Gestion des Fournisseurs</button>  
+            <button class="btnDisplay" data-target="divSubsidesMenus">Gestion des Menus</button> 
+            <button class="btnDisplay" data-target="divSubsidesPlatsduJour">Gestion des Plats du Jour</button>  
+            <button class="btnDisplay" data-target="divSubsidesPromotions">Gestion des Promotions</button>  
+            <button class="btnDisplay" data-target="divSubsidesStatistiques">Statistiques</button>  
+        </div>
+
+        <div id="divSubsides" class="divSubsides">
+        <h2>Gestion des Administrateurs</h2>
             <?php foreach($recordset as $row){ ?>
             <div class="card-admin border=solid 1x black">
                 <table>
@@ -136,8 +148,8 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
                 <a href="liste-des-administrateurs.php">Liste des Administrateurs</a>
             </div>
         </div>
-     
-        <div class="divSubsidesDepenses divSubsides">
+        
+        <div id="divSubsidesDepenses" class="divSubsides">
             <h2>Gestion des Depenses</h2>
             <div class="ajouter-une-depense">
                 <a href="ajouter-une-depense.php">Ajouter une Depense</a>
@@ -146,8 +158,8 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
                 </div>
             </div>
         </div>
-    
-        <div class="divSubsidesReservations divSubsides">
+
+        <div id="divSubsidesReservations" class="divSubsides">
             <h2>Gestion des Reservations</h2>
             <div class="ajouter-une-reservation">
                 <a href="ajouter-une-reservation.php">Ajouter une Reservation</a>
@@ -157,7 +169,7 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
             </div>
         </div>
         
-        <div class="divSubsidesStocks divSubsides">
+        <div id="divSubsidesStocks" class="divSubsides">
             <h2>Gestion des Stocks</h2>
             <div class="ajouter-un-stock">
                 <a href="ajouter-un-stock.php">Ajouter un Stock</a>
@@ -167,7 +179,7 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
             </div>
         </div>
 
-        <div class="divSubsidesTransactions divSubsides">
+        <div id="divSubsidesTransactions" class="divSubsides">
             <h2>Gestion des Transactions</h2>
             <div class="ajouter-une-transaction">
                 <a href="ajouter-une-transaction.php" id="show-form-1" data-active-forms="form-2,form-3,form-4,form-5,form-6,form-7,form-8,form-9">Ajouter une Transaction</a>
@@ -177,7 +189,7 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
             </div>
         </div>
 
-        <div class="divSubsidesCommentaires divSubsides">
+        <div id="divSubsidesCommentaires" class="divSubsides">
             <h2>Gestion des Commentaires</h2>
             <div class="ajouter-un-commentaire">
                 <a href="ajouter-un-commentaire.php" id="show-form-2" data-active-forms="form-1,form-3,form-4,form-5,form-6,form-7,form-8,form-9">Ajouter un Commentaire</a>
@@ -187,7 +199,7 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
             </div>
         </div>
 
-        <div class="divSubsidesDocuments divSubsides">
+        <div id="divSubsidesDocuments" class="divSubsides">
             <h2>Gestion des Documents</h2>
             <div class="ajouter-un-document">
                 <a href="ajouter-un-document.php"id="show-form-3" data-active-forms="form-1,form-2,form-4,form-5,form-6,form-7,form-8,form-9">Ajouter un Document</a>
@@ -197,7 +209,7 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
             </div>
         </div>
 
-        <div class="divSubsidesEmployés divSubsides">
+        <div id="divSubsidesEmployés" class="divSubsides">
             <h2>Gestion des Employés</h2>
             <div class="ajouter-un-employe">
                 <a href="ajouter-un-employe.php"id="show-form-4" data-active-forms="form-1,form-2,form-3,form-5,form-6,form-7,form-8,form-9">Ajouter un Employé</a>
@@ -208,7 +220,7 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
         </div>
         
 
-        <div class="divSubsidesFournisseurs divSubsides">
+        <div id="divSubsidesFournisseurs" class="divSubsides">
             <h2>Gestion des Fournisseurs</h2>
             <div class="ajouter-un-fournisseur">
                 <a href="ajouter-un-fournisseur.php" id="show-form-5"  data-active-forms="form-1,form-2,form-3,form-4,form-6,form-7,form-8,form-9">Ajouter un Fournisseur</a>
@@ -218,7 +230,7 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
             </div>
         </div>
 
-        <div class="divSubsidesMenus divSubsides">
+        <div id="divSubsidesMenus" class="divSubsides">
             <h2>Gestion des Menus</h2>
             <div class="ajouter-un-menu">
                 <a href="ajouter-un-menu.php" id="show-form-6" data-active-forms="form-2,form-3,form-4,form-5,form-7,form-8,form-9">Ajouter un Menu</a>
@@ -228,8 +240,8 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
             </div>
         </div>
 
-         
-        <div class="divSubsidesPlatsduJour divSubsides">
+            
+        <div id="divSubsidesPlatsduJour" class="divSubsides">
             <h2>Gestion des Plats du Jour</h2>
             <div class="ajouter-un-plats-du-jour">
                 <a href="ajouter-un-plats-du-jour.php"  id="show-form-7" data-active-forms="form-2,form-3,form-4,form-5,form-6,form-8,form-9">Ajouter un Plat du Jour</a>
@@ -239,7 +251,7 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
             </div>
         </div>
 
-        <div class="divSubsidesPromotions divSubsides">
+        <div id="divSubsidesPromotions" class="divSubsides">
             <h2>Gestion des Promotions</h2>
             <div class="ajouter-une-promotion">
                 <a href="ajouter-une-promotion.php" id="show-form-8" data-active-forms="form-2,form-3,form-4,form-5,form-6,form-7,form-9">Ajouter une Promotion</a>
@@ -249,7 +261,7 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
             </div>
         </div>
 
-        <div class="divSubsidesStatistiques divSubsides">
+        <div id="divSubsidesStatistiques" class="divSubsides">
             <h2>Statistiques</h2>
             <div class="ajouter-une-statistique">
                 <a href="ajouter-une-statistique.php" id="show-form-9" data-active-forms="form-1,form-2,form-3,form-4,form-5,form-6,form-7,form-8">Ajouter une Statistique</a>
@@ -258,7 +270,7 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
                 <a href="liste-des-statistiques.php"  id="show-form-9" data-active-forms="form-1,form-2,form-3,form-4,form-5,form-6,form-7,form-8">Liste des Statistiques</a>
             </div>
         </div>
-</div>
+    </div>
 </section>
       <!-- Pagination -->
       <ul class="pagination">
@@ -293,5 +305,5 @@ if(isset($_POST['search']) && !empty($_POST['search']) && isset($_POST['type']) 
 </ul>
 
 </body>
-<script  src="view.js"></script>
+
 </html>
